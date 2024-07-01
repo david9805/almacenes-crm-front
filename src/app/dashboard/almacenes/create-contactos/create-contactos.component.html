@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Crear Contacto</h1>
+<mat-divider></mat-divider>
+<form [formGroup]="contactoForm" (ngSubmit)="onSubmit()" >
+  <mat-dialog-content>
+    <div class="grid grid-cols-2 gap-4 p-4">
+      <app-input typeForm="text" label="Nombres" [controller]="nombres" placeholder="Nombres..."></app-input> 
+      <app-input typeForm="text" label="Apellidos" [controller]="apellidos" placeholder="Apellidos..."></app-input> 
+    </div>
+    <div class="grid grid-cols-2 gap-4 p-4">
+      <app-input typeForm="text" label="Cargo" [controller]="cargo" placeholder="Cargo..."></app-input> 
+      <app-input typeForm="email" label="Email" [controller]="email" placeholder="Correo..."></app-input> 
+    </div>
+    <div class="grid grid-cols-2 gap-4 p-4">
+      <app-input typeForm="text" label="Telefono" [controller]="telefono" placeholder="Telefono..."></app-input> 
+      <app-input typeForm="text" label="Celular" [controller]="celular" placeholder="Celular..."></app-input> 
+    </div>
+  </mat-dialog-content>
+  <mat-divider></mat-divider>
+  <mat-dialog-actions>
+    <button type="submit" class="ml-2 text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Guardar</button>
+    <button type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" (click)="close()">Cancelar</button>
+  </mat-dialog-actions>
+</form>
+
