@@ -4,6 +4,7 @@ import { InputComponent } from './input/input.component';
 import { MaterialModule } from '../material/material.module';
 import { CustomSnackbarComponent } from './custom-snackbar/custom-snackbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DirectiveModule } from '../directive/directive.module';
 
 
 
@@ -18,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,                
     MaterialModule,
+    DirectiveModule
   ],
   exports:[
     InputComponent,    

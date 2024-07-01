@@ -19,6 +19,9 @@ export class InputComponent{
   @Input() dataRadioBox:any = [];
   @Input() checked:string='';
   @Input() unchecked:string='';
+  @Input() maxlength: any;
+
+  @Input() mask:string='';
 
 
   controllerError = new FormControl('');
@@ -82,5 +85,28 @@ export class InputComponent{
     else{
       return 'w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
     } 
+  }
+
+  get maskInput(){
+    let mask = '';
+    if (this.mask  === 'onlyText'){
+      mask = '^[a-zA-Z\\s]*$'
+    }
+    else if(this.mask  === 'text'){
+      mask = '^[a-zA-Z0-9\\s\\W]*$';
+    }
+    else if(this.mask  === 'textarea'){
+      mask = '^[a-zA-Z0-9\\s\\W]*$';
+    }
+    else if (this.mask  === 'number'){
+      mask = '^[0-9-\\s]*$'
+    }
+    else if (this.mask === 'email'){
+      mask = '^[a-zA-Z0-9@._-]+$';
+    }
+    else if (this.mask === 'password') {
+      mask = ''; // No aplicar máscara para campos de contraseña
+    }
+    return mask;
   }
 }

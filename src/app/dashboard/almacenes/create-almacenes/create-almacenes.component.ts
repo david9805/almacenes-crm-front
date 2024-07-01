@@ -45,8 +45,8 @@ export class CreateAlmacenesComponent {
   coeficiente:FormControl = new FormControl(0,[Validators.required]);
   horario:FormControl = new FormControl('',[Validators.required]);
   status:FormControl = new FormControl(true,[Validators.required]);
-  telefono:FormControl = new FormControl('',[Validators.required]);
-  telefono2:FormControl = new FormControl('',[Validators.required]);
+  telefono:FormControl = new FormControl('',[Validators.required,Validators.maxLength(10)]);
+  telefono2:FormControl = new FormControl('',[Validators.required,Validators.maxLength(10)]);
   valorAdministracion:FormControl = new FormControl(0,[Validators.required]);
   nameContacto:FormControl = new FormControl('');
 
@@ -316,5 +316,8 @@ export class CreateAlmacenesComponent {
       this.dataSource = new MatTableDataSource<any>(this.dataContactos);
       this.dataSource.paginator = this.paginator;   
     })
+  }
+  cancel(){
+    this.router.navigate(['./dashboard/almacen']);
   }
 }

@@ -70,6 +70,7 @@ export class AlmacenesComponent {
       name:this.name
     }
     this.almacenService.getAlmacenes(queryParams).subscribe((data:any)=>{
+      console.log(data.element);
       this.dataSource = new MatTableDataSource<any>(data.element);
       this.totalData = data.count;
     },

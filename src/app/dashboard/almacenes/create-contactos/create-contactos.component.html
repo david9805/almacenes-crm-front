@@ -11,8 +11,8 @@
       <app-input typeForm="email" label="Email" [controller]="email" placeholder="Correo..."></app-input> 
     </div>
     <div class="grid grid-cols-2 gap-4 p-4">
-      <app-input typeForm="text" label="Telefono" [controller]="telefono" placeholder="Telefono..."></app-input> 
-      <app-input typeForm="text" label="Celular" [controller]="celular" placeholder="Celular..."></app-input> 
+      <app-input typeForm="text" label="Telefono" [controller]="telefono" placeholder="Telefono..." maxlength="10" mask="number"></app-input> 
+      <app-input typeForm="text" label="Celular" [controller]="celular" placeholder="Celular..." maxlength="10" mask="number"></app-input> 
     </div>
   </mat-dialog-content>
   <mat-divider></mat-divider>
