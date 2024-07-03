@@ -47,8 +47,8 @@
     </div>
     <div class="sm:hidden" [class.hidden]="!isMobileMenuOpen" id="mobile-menu">
       <div class="space-y-1 px-2 pb-3 pt-2">
-        <a [routerLink]="['./dashboard']" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>        
-        <a [routerLink]="['./dashboard/almacen']" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Almacenes</a>        
+        <a [routerLink]="['./']" [routerLinkActiveOptions]="{ exact: true }"  routerLinkActive="bg-gray-900" class="block rounded-md px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>        
+        <a [routerLink]="['./almacen']" [routerLinkActiveOptions]="{ exact: true }"  routerLinkActive="bg-gray-900" class="block rounded-md  px-3 py-2 text-base font-medium text-white" aria-current="page">Almacenes</a>        
       </div>
     </div>
   </nav>
