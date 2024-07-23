@@ -81,5 +81,16 @@ export class AlmacenService {
     return this.http.get(url,{headers});
   }
 
+  getPropietario(idAlmacen:string,queryParams:any){
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`
+    }); 
+
+    
+    const url = environment.services.almacen.base + environment.services.almacen.endpoints.getPropietario.replace('?',idAlmacen);
+
+    return this.http.get(url,{headers,params:queryParams})
+  }
+
   
 }

@@ -5,6 +5,7 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { RouterModule, Routes } from '@angular/router';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { CreateContactosComponent } from './create-contactos/create-contactos.component';
+import { CreatePropietarioComponent } from './create-propietario/create-propietario.component';
 
 const routes:Routes = [
   {
@@ -25,7 +26,8 @@ const routes:Routes = [
 @NgModule({
   declarations: [
     AlmacenesComponent,
-    CreateContactosComponent
+    CreateContactosComponent,
+    CreatePropietarioComponent
   ],
   imports: [
     CommonModule,

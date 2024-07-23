@@ -24,6 +24,7 @@ export const environment:IEnviroment= {
                 getByIdContactoAlmacen:'/contactoAlmacen/?',
                 getTipoNegocio:'/tipoNegocio',
                 getSubTipoNegocio:'/subTipoNegocio/?',
+                getPropietario:'/propietario/?'
             }
         }
     }

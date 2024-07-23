@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import { VariablesService } from '../services/variables.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +12,9 @@ export class DashboardComponent {
   isMobileMenuOpen = false;
   isUserMenuOpen = false;
 
-  constructor(private router:Router){
+  constructor(private router:Router,
+              private variables:VariablesService
+  ){
 
   }
 
@@ -38,8 +41,8 @@ export class DashboardComponent {
     }
   }
 
-  get usuario(){
-    return localStorage.getItem('usuario')
+  get usuario(){    
+    return this.variables.nombreCompleto
   }
 
   logout(){

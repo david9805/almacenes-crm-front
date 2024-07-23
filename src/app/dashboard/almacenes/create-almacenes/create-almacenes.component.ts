@@ -8,6 +8,8 @@ import { AlmacenService } from 'src/app/services/almacen.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { CreateContactosComponent } from '../create-contactos/create-contactos.component';
 import {  ActivatedRoute, Router } from '@angular/router';
+import { VariablesService } from 'src/app/services/variables.service';
+import { CreatePropietarioComponent } from '../create-propietario/create-propietario.component';
 
 @Component({
   selector: 'app-create-almacenes',
@@ -21,7 +23,8 @@ export class CreateAlmacenesComponent {
               private cdr:ChangeDetectorRef,
               private dialog:MatDialog,
               private router:Router,
-              private activadeRoute:ActivatedRoute
+              private activadeRoute:ActivatedRoute,
+              private variables:VariablesService
   ){    
     this.tipoNegocio.valueChanges.subscribe(value=>{
       this.getSubTipoNegocio(value);
@@ -49,6 +52,7 @@ export class CreateAlmacenesComponent {
   telefono2:FormControl = new FormControl('',[Validators.required,Validators.maxLength(10)]);
   valorAdministracion:FormControl = new FormControl(0,[Validators.required]);
   nameContacto:FormControl = new FormControl('');
+  usuarioCrea:FormControl = new FormControl(this.variables.nombreCompleto);
 
   dataAlmacen:any;
 
@@ -68,7 +72,8 @@ export class CreateAlmacenesComponent {
     status:this.status,
     telefono:this.telefono,
     telefono2:this.telefono2,
-    valorAdministracion:this.valorAdministracion
+    valorAdministracion:this.valorAdministracion,    
+    usuarioCrea:this.usuarioCrea
   });
   dataRadioBox:any = [
     {
@@ -101,6 +106,10 @@ export class CreateAlmacenesComponent {
 
   edit = false;
   idAlmacen:string='';
+  dataPropietarios:any[] = [];
+  dataSourcePropietarios = new MatTableDataSource<any>(this.dataPropietarios);
+  @ViewChild(MatPaginator) paginatorPropietarios!:MatPaginator;
+  namePropietario:FormControl = new FormControl('');
 
   ngOnInit(): void {     
     this.getTipoNegocio();
@@ -112,6 +121,16 @@ export class CreateAlmacenesComponent {
         this.dataSource.paginator.firstPage();
       }
     });
+
+    this.namePropietario.valueChanges.subscribe(
+      data=>{
+        this.dataSourcePropietarios.filter = data.trim().toLowerCase();
+
+        if (this.dataSourcePropietarios.paginator){
+          this.dataSourcePropietarios.paginator.firstPage();
+        }
+      }
+    )
     
 
     const id = this.activadeRoute.snapshot.params['id'];
@@ -150,6 +169,7 @@ export class CreateAlmacenesComponent {
       this.telefono2.setValue(dataAlmacen.telefono2);
       this.valorAdministracion.setValue(dataAlmacen.valorAdministracion);      
       this.getContactos();
+      this.getPropietarios();
     }
   }
 
@@ -218,6 +238,24 @@ export class CreateAlmacenesComponent {
     }
   }
 
+  getPropietarios(){
+    if (this.idAlmacen) {
+      const queryParams = {
+        all:true
+      }
+      this.almacenService.getPropietario(this.idAlmacen,queryParams).subscribe(
+        (data:any)=>{
+          this.dataPropietarios = data.element;
+          this.dataSourcePropietarios = new MatTableDataSource<any>(this.dataPropietarios)
+          this.dataSourcePropietarios.paginator = this.paginatorPropietarios
+        },
+        error=>{
+          this.snackBarService.show(error.error.message,'error')
+        }
+      )
+    }
+  }
+
   onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
@@ -245,6 +283,28 @@ export class CreateAlmacenesComponent {
         this.dataSource.paginator = this.paginator;    
       }      
     })
+  }
+
+  createPropietarios(){
+    const  registroMayor = this.dataPropietarios.reduce((max,current)=>{
+      return (current.idPropietario > max.idPropietario) ? current:max
+    },{idPropietario:0});
+
+    const dialogRefPropietario = this.dialog.open(CreatePropietarioComponent,{
+      data:{
+        indice:registroMayor.idPropietario
+      }
+    });
+
+    dialogRefPropietario.afterClosed().subscribe(
+      data=>{
+        if(data){
+          this.dataPropietarios.push(data.data);
+          this.dataSourcePropietarios = new MatTableDataSource<any>(this.dataPropietarios);
+          this.dataSourcePropietarios.paginator = this.paginatorPropietarios;
+        }
+      }
+    )
   }
 
   save(){
@@ -292,7 +352,9 @@ export class CreateAlmacenesComponent {
       telefono:this.almacenForm.get('telefono')?.value ? this.almacenForm.get('telefono')?.value : '',
       telefono2:this.almacenForm.get('telefono2')?.value ? this.almacenForm.get('telefono2')?.value : '',
       valorAdministracion:this.almacenForm.get('valorAdministracion')?.value ? this.almacenForm.get('valorAdministracion')?.value : 0,
-      contactos: this.dataContactos ? this.dataContactos : []
+      contactos: this.dataContactos ? this.dataContactos : [],
+      propietarios: this.dataPropietarios ? this.dataPropietarios : [],
+      usuarioCrea: this.almacenForm.get('usuarioCrea')?.value ? this.almacenForm.get('usuarioCrea')?.value : ''
     }
 
     return auxData;
@@ -317,7 +379,48 @@ export class CreateAlmacenesComponent {
       this.dataSource.paginator = this.paginator;   
     })
   }
+
+  updatePropietario(element:any){
+    const dialogRef = this.dialog.open(CreatePropietarioComponent,{
+      data:{
+        element:element
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(
+      data=>{
+        const dataModal = data.data;
+        const dato = this.dataPropietarios.map(propietario=>{
+          return propietario.idPropietario === dataModal.idPropietario ? dataModal : propietario
+        });
+
+        this.dataPropietarios = dato;
+        this.dataSourcePropietarios = new MatTableDataSource<any>(this.dataPropietarios);
+        this.dataSourcePropietarios.paginator = this.paginatorPropietarios;
+      }
+    )
+  }
   cancel(){
     this.router.navigate(['./dashboard/almacen']);
   }
+
+  get visualizarContacto(){
+    return this.variables.visualizarContacto;
+  }
+
+  get visualizarPropietario(){
+    return this.variables.visualizarPropietario;
+  }
+
+  get modificarContacto(){
+    return this.variables.modificarContacto;
+  }
+
+  get modificarPropietario(){
+    return this.variables.modificarPropietario
+  }
+
+  
+
+
 }

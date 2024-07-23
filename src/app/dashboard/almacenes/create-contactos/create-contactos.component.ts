@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators, Form } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/services/snackbar.service';
+import { VariablesService } from 'src/app/services/variables.service';
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -15,7 +16,8 @@ export class CreateContactosComponent {
   constructor(private dialogRef: MatDialogRef<CreateContactosComponent>,
               @Inject(MAT_DIALOG_DATA) data:any,
               private snackBarService:SnackbarService,
-              private cd:ChangeDetectorRef  ){
+              private cd:ChangeDetectorRef,
+              private variables:VariablesService  ){
     if (data.indice){
       this.indice = data.indice;
     }    
@@ -33,6 +35,7 @@ export class CreateContactosComponent {
   telefono = new FormControl(null,[Validators.required]);
   celular = new FormControl(null,[Validators.required]);
   idContactoAlmacen = new FormControl(0);
+  usuarioCrea = new FormControl(this.variables.nombreCompleto)
 
   contactoForm = new FormGroup({
     idContactoAlmacen:this.idContactoAlmacen,
@@ -41,7 +44,8 @@ export class CreateContactosComponent {
     cargo:this.cargo,
     email:this.email,    
     telefono:this.telefono,
-    celular:this.celular
+    celular:this.celular,
+    usuarioCrea:this.usuarioCrea
   });
 
   dataContacto:any;
@@ -54,7 +58,6 @@ export class CreateContactosComponent {
 
   onSubmit(): void {
   
-    console.log(this.contactoForm.value);
     if (this.contactoForm.invalid) {
       this.contactoForm.markAllAsTouched();      
       this.snackBarService.show('Debe Digitar Todos Los Campos', 'error');

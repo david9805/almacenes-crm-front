@@ -6,6 +6,7 @@ import { Subject, catchError, throwError } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { RecoverPasswordComponent } from '../recover-password/recover-password.component';
+import { VariablesService } from 'src/app/services/variables.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -27,7 +28,8 @@ export class SignInComponent {
  constructor(private authService:AuthService,
               private snackBarService:SnackbarService,
               private router:Router,
-              private dialog:MatDialog
+              private dialog:MatDialog,
+              private variables:VariablesService
  ){
   
  }
@@ -48,8 +50,8 @@ export class SignInComponent {
   ).subscribe(
     (data:any) => {
       localStorage.setItem('token',data.access_token);
-      localStorage.setItem('usuario',data.username);
-      localStorage.setItem('idUsuario',data.idUsuario);
+      localStorage.setItem('usuario',JSON.stringify(data.user));
+      this.variables.convertJson(JSON.stringify(data.user));
       this.router.navigate(['/dashboard'])      
       // Manejo de la respuesta exitosa
     },

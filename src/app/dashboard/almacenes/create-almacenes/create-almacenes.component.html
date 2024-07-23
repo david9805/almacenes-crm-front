@@ -31,12 +31,85 @@
                     <app-input typeForm="text" label="Celular" [controller]="telefono2" maxlength="10" mask="number"></app-input> 
                 </div>
             </mat-tab>
-            <mat-tab label="Contactos"> 
+             <!-- PROPIETARIOS -->
+            <mat-tab label="Propietarios" [disabled]="visualizarPropietario !== 'S'">
+              <div class="mt-4">
+                <app-input typeForm="text" label="Buscar" [controller]="namePropietario" placeholder="Nombre..."></app-input>
+            </div>    
+            <div class="mt-4">
+                <button type="button"  [ngClass]="{'hidden': modificarPropietario !== 'S'}"
+                        class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-full text-sm p-3 text-center me-2 mb-2  ml-2"
+                        (click)="createPropietarios()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mx-auto">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                </button>                    
+            </div>
+            <table mat-table [dataSource]="dataSourcePropietarios" matSort class="min-w-full divide-y divide-gray-200 mt-4">
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                  <td mat-cell *matCellDef="let element" class="px-6 py-4 whitespace-nowrap">#{{element?.idPropietario}}</td>
+                </ng-container>
+            
+                <!-- Almacen Column -->
+                <ng-container matColumnDef="nombres">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombres</th>
+                  <td mat-cell *matCellDef="let element" class="px-6 py-4 whitespace-nowrap">{{element?.nombres}}</td>
+                </ng-container>
+            
+                <!-- Local Column -->
+                <ng-container matColumnDef="apellidos">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Apellidos</th>
+                  <td mat-cell *matCellDef="let element" class="px-6 py-4 whitespace-nowrap">{{element?.apellidos}}</td>
+                </ng-container>
+            
+                <!-- Administrador Column -->
+                <ng-container matColumnDef="cargo">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cargo</th>
+                  <td mat-cell *matCellDef="let element" class="px-6 py-4 whitespace-nowrap">{{element?.cargo}}</td>
+                </ng-container>
+            
+                <!-- Tipo Negocio Column -->
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                  <td mat-cell *matCellDef="let element" class="px-6 py-4 whitespace-nowrap">{{element?.email}}</td>
+                </ng-container>
+            
+                <!-- Fecha Crea Column -->
+                <ng-container matColumnDef="telefono">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Telefono</th>
+                  <td mat-cell *matCellDef="let element" class="px-6 py-4 whitespace-nowrap">{{element?.telefono}}</td>
+                </ng-container>
+            
+                <!-- Acciones Column -->
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                  <td mat-cell *matCellDef="let element" class="px-6 py-4 whitespace-nowrap">
+                    <button type="button" mat-icon-button [matMenuTriggerFor]="menu" >
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item (click)="updatePropietario(element)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Editar</span>
+                      </button>
+                    </mat-menu>
+                  </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            <mat-paginator class="mt-5" [pageSizeOptions]="[4, 8, 16, 20]" [pageSize]="pageSize" [length]="dataSourcePropietarios.data.length" [pageIndex]="pageIndex" showFirstLastButtons></mat-paginator>
+            </mat-tab>  
+            <!-- CONTACTOS -->
+            <mat-tab label="Contactos"  [disabled]="visualizarContacto !== 'S'"> 
                 <div class="mt-4">
                     <app-input typeForm="text" label="Buscar" [controller]="nameContacto" placeholder="Nombre..."></app-input>
                 </div>    
                 <div class="mt-4">
-                    <button type="button" 
+                    <button type="button"  [ngClass]="{'hidden': modificarContacto !== 'S'}"
                             class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-full text-sm p-3 text-center me-2 mb-2  ml-2"
                             (click)="createContactos()">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mx-auto">
@@ -101,7 +174,7 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                   </table>
                 <mat-paginator class="mt-5" [pageSizeOptions]="[4, 8, 16, 20]" [pageSize]="pageSize" [length]="dataSource.data.length" [pageIndex]="pageIndex" (page)="onPageChange($event)"  showFirstLastButtons></mat-paginator>
-            </mat-tab>    
+            </mat-tab>             
         </mat-tab-group>
     </div>
     <div class="flex justify-between mb-4 mt-4">    

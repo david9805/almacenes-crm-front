@@ -21,6 +21,7 @@ export interface IEnviroment {
                 getByIdContactoAlmacen:string;
                 getTipoNegocio:string;
                 getSubTipoNegocio:string;
+                getPropietario:string;                
             }
         },        
     }

@@ -5,6 +5,7 @@ import { MaterialModule } from '../material/material.module';
 import { CustomSnackbarComponent } from './custom-snackbar/custom-snackbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DirectiveModule } from '../directive/directive.module';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 
@@ -14,7 +15,7 @@ import { DirectiveModule } from '../directive/directive.module';
 @NgModule({
   declarations: [
     InputComponent,    
-    CustomSnackbarComponent,
+    CustomSnackbarComponent, NotFoundComponent,
   ],
   imports: [
     CommonModule,                
